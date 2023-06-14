@@ -88,7 +88,8 @@ jobs:
     steps:
       # - checkout
         
-      - run: win/install-dotnet-sdk
+      # - run: win/install-dotnet-sdk
+      - run: dotnet --list-sdks
       - run: choco install dotnetcore-sdk
 
       # - run: choco install gitversion.portable
