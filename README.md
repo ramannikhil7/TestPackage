@@ -1,2 +1,2 @@
-# TestPackage
-Testing the package
+# CircleC-core
+Core based project
