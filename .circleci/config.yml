@@ -35,37 +35,82 @@
 
 
 
+# version: 2.1
+
+# orbs:
+#   windows: circleci/windows@2.2.0
+
+# jobs:
+#   build:
+#     description: Setup and run application tests
+#     executor:
+#       name: windows/default
+#     steps:
+#       - checkout
+#       # - run: choco install gitversion.portable
+#       #- run: choco install netfx-4.8-devpack
+#       # - run: choco install netfx-4.7.2-devpack
+#       # - run: dotnet tool install -g dotnet-core-uninstall
+#        # Clone the GitHub repository
+#       - run:
+#          name: Run PowerShell script
+#          command: |
+#             git clone https://github.com/ramannikhil7/TestPackage
+
+#             # Change to the directory containing the PowerShell script
+#             cd TestPackage
+
+#             # Run the PowerShell script
+#             # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
+#             powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
+#       - run: dotnet --list-sdks
+#       - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
+#       - run: dotnet --list-sdks
+#       #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
+# workflows:
+#   build:
+#     jobs:
+#       - build
+
+
 version: 2.1
 
 orbs:
-  windows: circleci/windows@2.2.0
+  windows: circleci/windows@2.4.0
 
 jobs:
   build:
     description: Setup and run application tests
     executor:
       name: windows/default
+    environment:
+      DOTNET_VERSION: 3.1
     steps:
-      - checkout
+      # - checkout
+        
+      - run: win/install-dotnet-sdk
+      - run: choco install dotnetcore-sdk
+
       # - run: choco install gitversion.portable
       #- run: choco install netfx-4.8-devpack
       # - run: choco install netfx-4.7.2-devpack
       # - run: dotnet tool install -g dotnet-core-uninstall
-       # Clone the GitHub repository
-      - run:
-         name: Run PowerShell script
-         command: |
-            git clone https://github.com/ramannikhil7/TestPackage
+      # Clone the GitHub repository
+      # - run:
 
-            # Change to the directory containing the PowerShell script
-            cd TestPackage
+      #  name: Run PowerShell script
+      #    command: |
+      #       git clone https://github.com/ramannikhil7/TestPackage
 
-            # Run the PowerShell script
-            # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
-            powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
+      #       # Change to the directory containing the PowerShell script
+      #       cd TestPackage
+
+      #       # Run the PowerShell script
+      #       # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
+      #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
       - run: dotnet --list-sdks
-      - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
-      - run: dotnet --list-sdks
+      # - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
+      # - run: dotnet --list-sdks
       #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
 workflows:
   build:
