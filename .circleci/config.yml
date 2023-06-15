@@ -91,7 +91,7 @@ jobs:
         
       # - run: win/install-dotnet-sdk
       - run: dotnet --list-sdks
-      - run: choco install dotnetcore-sdk
+      - run: choco install dotnetcore-sdk --version=3.1.426
 
       # - run: choco install gitversion.portable
       #- run: choco install netfx-4.8-devpack
