@@ -38,6 +38,8 @@ jobs:
       #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
 
       - run: msbuild -version
+      - run: dotnet --version
+
 
       # - run: 
       #     name: Install MS Build
