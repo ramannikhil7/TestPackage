@@ -41,6 +41,7 @@ jobs:
       - run: msbuild -version
       - run: dotnet --version
       - run: msbuild /version
+      - run: msbuild -version
 
 
 
