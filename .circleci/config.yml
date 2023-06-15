@@ -24,6 +24,7 @@ jobs:
       - run: 
           name: Run PS script
           command: powershell -ExecutionPolicy Bypass -File test_PS_script.ps1
+          shell: powershell.exe
       # - run: choco install gitversion.portable
       #- run: choco install netfx-4.8-devpack
       # - run: choco install netfx-4.7.2-devpack
