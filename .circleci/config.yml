@@ -10,10 +10,11 @@ jobs:
   build:
     description: Setup and run application tests
     executor:
-      name: windows/default
+      name: windows/default 
+      # | win/win2019
       shell: powershell.exe
-
         # name: windows/server-2019
+      
     # environment:
     #   DOTNET_VERSION: 3.1
     steps:
@@ -23,14 +24,20 @@ jobs:
       # - win/with-powershell: |
 
             path: ~/repo
-      - run: Start-Process powershell.exe -Verb runAs
+      # - run: Start-Process powershell.exe -Verb runAs
       # persist_to_workspace:
           # - ~/repo
       # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
       # - run: choco install msbuild2022
       # - run: choco install visualstudio2022buildtools
       # - run: choco install msbuild -y
-      - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
+      - run:
+          name: Run PowerShell in admin mode
+          command: |
+            winshell true
+            powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
+
+            - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
 
             #  refreshenv
 
@@ -64,6 +71,14 @@ jobs:
       - run: dotnet --list-sdks
       - run: choco install dotnetcore-sdk --version=3.1.426
       - run: dotnet --list-sdks
+
+workflows:
+  build:
+    jobs:
+      - build
+
+
+
       # - run: 
       #     name: Run PS script
           # shell: powershell.exe
@@ -88,12 +103,6 @@ jobs:
       # - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
       # - run: dotnet --list-sdks
       #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
-workflows:
-  build:
-    jobs:
-      - build
-
-
 
       # # Use the latest 2.1 version of CircleCI pipeline process engine.
 # # See: https://circleci.com/docs/configuration-reference
