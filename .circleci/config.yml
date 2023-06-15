@@ -27,6 +27,12 @@ jobs:
           command: |
             choco install git -y
             refreshenv
+            
+      - run:
+          name: Install PowerShell
+          command: |
+            choco install powershell -y
+            refreshenv
 
       - run:
           name: Clone Repository
