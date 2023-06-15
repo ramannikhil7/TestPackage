@@ -33,7 +33,7 @@ jobs:
           command: |
             git config --global user.email "imnick592@gmail.com"
             git config --global user.name "ramannikhil7"
-            git clone --branch dev https://github.com/ramannikhil7/TestPackage ~/repo
+            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
 
       - run:
           name: Build Packages
