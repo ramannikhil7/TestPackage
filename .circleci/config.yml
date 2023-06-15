@@ -27,7 +27,7 @@ jobs:
           command: |
             choco install git -y
             refreshenv
-            
+      - run: Get-Host 
       - run:
           name: Install PowerShell
           command: |
