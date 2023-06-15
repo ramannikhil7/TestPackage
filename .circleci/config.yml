@@ -45,7 +45,7 @@ jobs:
           name: Build Packages
           command: |
             cd ~/repo
-            pwsh -Command test_PS_script.ps1
+            powershell -File test_PS_script.ps1
           # shell: 
           #   powershell.exe
       # - run: win/install-dotnet-sdk
