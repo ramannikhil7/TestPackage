@@ -76,14 +76,14 @@
 version: 2.1
 
 orbs:
-  windows: circleci/windows@5.0.0
+  windows: circleci/windows@2.0
 
 jobs:
   build:
     description: Setup and run application tests
     executor:
-      # name: windows/default
-        name: windows/server-2019
+      name: windows/default
+        # name: windows/server-2019
     environment:
       DOTNET_VERSION: 3.1
     steps:
