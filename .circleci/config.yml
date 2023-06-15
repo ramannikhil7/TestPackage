@@ -37,11 +37,12 @@ jobs:
       #       winshell true
       #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
 
+      - run: msbuild -version
 
-      - run: 
-          name: Install MS Build
-          command: |   
-            Install-Module -Name Invoke-MsBuild -RequiredVersion 2.6.2
+      # - run: 
+      #     name: Install MS Build
+      #     command: |   
+      #       Install-Module -Name Invoke-MsBuild -RequiredVersion 2.6.2
       # install the ms build tools 
       # - run: mkdir 'C:\vs_buildtools.exe'
 
@@ -58,7 +59,7 @@ jobs:
 
 
 
-      - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
+      # - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
 
             #  refreshenv
 
