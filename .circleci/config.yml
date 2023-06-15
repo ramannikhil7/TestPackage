@@ -37,7 +37,7 @@ jobs:
             winshell true
             powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
 
-            - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
+      - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
 
             #  refreshenv
 
