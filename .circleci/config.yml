@@ -21,7 +21,8 @@ jobs:
           path: ~/repo
           # persist_to_workspace:
           # - ~/repo
-      - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
+      # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
+      - run: choco install msbuild2022
              refreshenv
 
       - run:
