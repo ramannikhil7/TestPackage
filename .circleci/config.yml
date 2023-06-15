@@ -45,7 +45,9 @@ jobs:
           name: Build Packages
           command: |
             cd ~/repo
-            pwsh -File test_PS_script.ps1
+            pwsh -Command test_PS_script.ps1
+          # shell: 
+          #   powershell.exe
       # - run: win/install-dotnet-sdk
       - run: dotnet --list-sdks
       - run: choco install dotnetcore-sdk --version=3.1.426
