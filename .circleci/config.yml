@@ -17,16 +17,37 @@ jobs:
     # environment:
     #   DOTNET_VERSION: 3.1
     steps:
-      # - checkout
-        
+      - checkout:
+          path: ~/repo
+          # persist_to_workspace:
+          # - ~/repo
+
+      - run:
+          name: Install Git
+          command: |
+            choco install git -y
+            refreshenv
+
+      - run:
+          name: Clone Repository
+          command: |
+            git config --global user.email "imnick592@gmail.com"
+            git config --global user.name "ramannikhil7"
+            git clone --branch dev https://github.com/ramannikhil7/TestPackage ~/repo
+
+      - run:
+          name: Build Packages
+          command: |
+            cd ~/repo
+            pwsh -File test_PS_script.ps1
       # - run: win/install-dotnet-sdk
       - run: dotnet --list-sdks
       - run: choco install dotnetcore-sdk --version=3.1.426
       - run: dotnet --list-sdks
-      - run: 
-          name: Run PS script
-          shell: powershell.exe
-          command: powershell -ExecutionPolicy Bypass -File test_PS_script.ps1
+      # - run: 
+      #     name: Run PS script
+          # shell: powershell.exe
+          # command: powershell -ExecutionPolicy Bypass -File test_PS_script.ps1
       # - run: choco install gitversion.portable
       #- run: choco install netfx-4.8-devpack
       # - run: choco install netfx-4.7.2-devpack
