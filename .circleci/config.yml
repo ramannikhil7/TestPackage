@@ -18,8 +18,13 @@ jobs:
     #   DOTNET_VERSION: 3.1
     steps:
       - checkout:
-          path: ~/repo
-          # persist_to_workspace:
+      # - win/use-node:
+      #     version: 14
+      # - win/with-powershell: |
+
+            path: ~/repo
+      - run: Start-Process powershell.exe -Verb runAs
+      # persist_to_workspace:
           # - ~/repo
       # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
       # - run: choco install msbuild2022
