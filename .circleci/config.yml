@@ -24,7 +24,8 @@ jobs:
       # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
       # - run: choco install msbuild2022
       # - run: choco install visualstudio2022buildtools
-      - run: choco install msbuild -y
+      # - run: choco install msbuild -y
+      - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
 
             #  refreshenv
 
