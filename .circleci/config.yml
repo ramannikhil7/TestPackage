@@ -24,7 +24,7 @@ jobs:
       # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
       # - run: choco install msbuild2022
       - run: choco install visualstudio2022buildtools
-             refreshenv
+            #  refreshenv
 
       - run:
           name: Install Git
