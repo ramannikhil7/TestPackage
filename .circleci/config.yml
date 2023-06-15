@@ -22,6 +22,7 @@ jobs:
       # - win/use-node:
       #     version: 14
       # - win/with-powershell: |
+      
 
             path: ~/repo
       # - run: Start-Process powershell.exe -Verb runAs
@@ -39,6 +40,8 @@ jobs:
 
       - run: msbuild -version
       - run: dotnet --version
+      - run: msbuild /version
+
 
 
       # - run: 
