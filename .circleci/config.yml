@@ -84,14 +84,14 @@ jobs:
     executor:
       name: windows/default
         # name: windows/server-2019
-    environment:
-      DOTNET_VERSION: 3.1
+    # environment:
+    #   DOTNET_VERSION: 3.1
     steps:
       # - checkout
         
       # - run: win/install-dotnet-sdk
       - run: dotnet --list-sdks
-      # - run: choco install dotnetcore-sdk
+      - run: choco install dotnetcore-sdk
 
       # - run: choco install gitversion.portable
       #- run: choco install netfx-4.8-devpack
