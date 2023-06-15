@@ -42,6 +42,8 @@ jobs:
           command: |
             Invoke-WebRequest -Uri 'https://aka.ms/vs/16/release/vs_buildtools.exe' -OutFile 'C:\Temp\vs_buildtools.exe'
       
+      - run: mkdir 'C:\Temp\vs_buildtools.exe'
+
       - run:
          name: run the build tool
          command: |
