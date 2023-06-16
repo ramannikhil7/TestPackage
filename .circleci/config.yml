@@ -49,9 +49,16 @@ jobs:
              Invoke-WebRequest -Uri 'https://aka.ms/buildtools' -OutFile 'vs_buildtools.exe'
 
       - run: 
+         name: Get path location
+         command:
+          #  $currentDirectory = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+           MSBUILD_PATH=$("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
+           echo  $MSBUILD_PATH
+
+      - run: 
          name: Install MSBuild
          command: |
-            Start-Process -FilePath '(&"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)' -ArgumentList '--quiet --wait'
+            Start-Process -FilePath $MSBUILD_PATH -ArgumentList '--quiet --wait'
 
 
 
