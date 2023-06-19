@@ -44,24 +44,24 @@ jobs:
       - run: msbuild -version
       - run: dotnet --version
       # - run: msbuild /version
-      # - run:  dotnet build --version
+      # # - run:  dotnet build --version
 
-      - run:
-         name: Download MSBuild
-         command: |
-             Invoke-WebRequest -Uri 'https://aka.ms/buildtools' -OutFile 'vs_buildtools.exe'
+      # - run:
+      #    name: Download MSBuild
+      #    command: |
+      #        Invoke-WebRequest -Uri 'https://aka.ms/buildtools' -OutFile 'vs_buildtools.exe'
       
-      - run: 
-         name: Get path location
-         command:
-          #  $currentDirectory = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
-           MSBUILD_PATH=$("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
-           echo  $MSBUILD_PATH
+      # - run: 
+      #    name: Get path location
+      #    command:
+      #     #  $currentDirectory = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+      #      MSBUILD_PATH=$("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
+      #      echo  $MSBUILD_PATH
 
-      - run: 
-         name: Install MSBuild
-         command: |
-            Start-Process -FilePath $MSBUILD_PATH -ArgumentList '--quiet --wait'
+      # - run: 
+      #    name: Install MSBuild
+      #    command: |
+      #       Start-Process -FilePath $MSBUILD_PATH -ArgumentList '--quiet --wait'
 
 
 
@@ -112,6 +112,7 @@ jobs:
           name: Build Packages
           command: |
             cd ~/repo
+            powershell -File test msbuild path.ps1
             powershell -File test_PS_script.ps1
           # shell: 
           #   powershell.exe
