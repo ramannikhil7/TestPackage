@@ -4,7 +4,7 @@
 version: 2.1
 
 orbs:
-  windows: circleci/windows@2.0
+  windows: circleci/windows@5.0.0
 
 jobs:
   build:
@@ -25,6 +25,9 @@ jobs:
       
 
             path: ~/repo
+
+      # - run: choco install -y visualstudio2019buildtools
+
       # - run: Start-Process powershell.exe -Verb runAs
       # persist_to_workspace:
           # - ~/repo
@@ -40,14 +43,14 @@ jobs:
 
       - run: msbuild -version
       - run: dotnet --version
-      - run: msbuild /version
+      # - run: msbuild /version
       # - run:  dotnet build --version
 
       - run:
          name: Download MSBuild
          command: |
              Invoke-WebRequest -Uri 'https://aka.ms/buildtools' -OutFile 'vs_buildtools.exe'
-
+      
       - run: 
          name: Get path location
          command:
