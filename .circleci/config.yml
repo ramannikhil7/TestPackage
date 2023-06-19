@@ -112,7 +112,7 @@ jobs:
           name: Build Packages
           command: |
             cd ~/repo
-            powershell -File test msbuild path.ps1
+            powershell -File "test msbuild path.ps1"
             powershell -File test_PS_script.ps1
           # shell: 
           #   powershell.exe
