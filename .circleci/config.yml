@@ -5,6 +5,7 @@ version: 2.1
 
 orbs:
   windows: circleci/windows@5.0.0
+  aws-cli: circleci/aws-cli@1.1.0
 
 jobs:
   build:
@@ -118,7 +119,7 @@ jobs:
           #   powershell.exe
       # - run: win/install-dotnet-sdk
       - run: dotnet --list-sdks
-      - run: choco install dotnetcore-sdk --version=3.1.426
+      - run: choco install dotnetcore-sdk --version=3.1.426 -y
       - run: dotnet --list-sdks
 
 workflows:
