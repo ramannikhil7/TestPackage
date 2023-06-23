@@ -52,25 +52,25 @@ jobs:
       #         git push origin ${BUILD_TAG}
       #       fi
 
-      - run: 
-          name: Create a Build release
-          command: |
-              name: Checkout code
-               uses: actions/checkout@v2
-              name: Create Release
-                id: create_release
-                uses: actions/create-release@v1
-                env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-                with:
-                  tag_name: ${{ github.ref }}
-                  release_name: Release ${{ github.ref }}
-                  body: |
-                    Changes in this Release
-                    - First Change
-                    - Second Change
-                  draft: false
-                  prerelease: false
+      # - run: 
+      #     name: Create a Build release
+      #     command: |
+      #         name: Checkout code
+      #          uses: actions/checkout@v2
+      #         name: Create Release
+      #           id: create_release
+      #           uses: actions/create-release@v1
+      #           env:
+      #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #           with:
+      #             tag_name: ${{ github.ref }}
+      #             release_name: Release ${{ github.ref }}
+      #             body: |
+      #               Changes in this Release
+      #               - First Change
+      #               - Second Change
+      #             draft: false
+      #             prerelease: false
       
     
 
@@ -100,12 +100,12 @@ jobs:
 
 
       
-      - run: Get-Host 
-      - run:
-          name: Install PowerShell
-          command: |
-            choco install powershell -y
-            refreshenv
+      # - run: Get-Host 
+      # - run:
+      #     name: Install PowerShell
+      #     command: |
+      #       choco install powershell -y
+      #       refreshenv
 
       - run:
           name: Clone Repository
@@ -114,18 +114,20 @@ jobs:
             git config --global user.name "ramannikhil7"
             git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
 
-      - run:
-          name: Build Packages
-          command: |
-            cd ~/repo
-            powershell -File "test msbuild path.ps1"
-            powershell -File test_PS_script.ps1
-          # shell: 
+      # - run:
+      #     name: Build Packages
+      #     command: |
+      #       cd ~/repo
+      #       powershell -File "test msbuild path.ps1"
+      #       powershell -File test_PS_script.ps1
+      #     # shell: 
           #   powershell.exe
       # - run: win/install-dotnet-sdk
-      - run: dotnet --list-sdks
-      - run: choco install dotnetcore-sdk --version=3.1.426 -y
-      - run: dotnet --list-sdks
+      - run: dotnet build
+      - run: dotnet test
+      # - run: dotnet --list-sdks
+      # - run: choco install dotnetcore-sdk --version=3.1.426 -y
+      # - run: dotnet --list-sdks
 
 workflows:
   build:
