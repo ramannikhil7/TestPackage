@@ -43,7 +43,7 @@ jobs:
               echo "Creating new build tag: ${BUILD_TAG}"
               git tag ${BUILD_TAG}
               git push origin ${BUILD_TAG}
-
+          fi
         # Get the Git version for the Buuld tag
       # - run:
       #      name: Write host Build
