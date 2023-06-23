@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircleCICoreProject", "CircleCICoreProject\CircleCICoreProject.csproj", "{CEC9AC78-0A85-42C4-A2ED-D2CD093AE691}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitProject", "XUnitProject\XUnitProject.csproj", "{7D15FD31-FAF2-4D1A-B8F2-B089D6494C63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEC9AC78-0A85-42C4-A2ED-D2CD093AE691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC9AC78-0A85-42C4-A2ED-D2CD093AE691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC9AC78-0A85-42C4-A2ED-D2CD093AE691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC9AC78-0A85-42C4-A2ED-D2CD093AE691}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D15FD31-FAF2-4D1A-B8F2-B089D6494C63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D15FD31-FAF2-4D1A-B8F2-B089D6494C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D15FD31-FAF2-4D1A-B8F2-B089D6494C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D15FD31-FAF2-4D1A-B8F2-B089D6494C63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8128981-81D3-4D6C-B70C-3913C85FBC48}
+	EndGlobalSection
+EndGlobal
