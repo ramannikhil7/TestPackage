@@ -35,6 +35,37 @@ jobs:
          command: |
            choco install git.portable -y
       
+      - run:
+          name: Clone Repository
+          command: |
+            git config --global user.email "imnick592@gmail.com"
+            git config --global user.name "ramannikhil7"
+            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
+
+      # - run:
+      #     name: Build Packages
+      #     command: |
+      #       cd ~/repo
+      #       powershell -File "test msbuild path.ps1"
+      #       powershell -File test_PS_script.ps1
+      #     # shell: 
+          #   powershell.exe
+      # - run: win/install-dotnet-sdk
+      - run: dotnet restore
+      - run: dotnet build
+      # - run: dotnet test
+      - run:
+          name: Run xUnit Tests
+          command: dotnet test --filter FullyQualifiedName~XUnitProject.UnitTest1.Test1 --logger:xunit
+
+      # - run: dotnet --list-sdks
+      # - run: choco install dotnetcore-sdk --version=3.1.426 -y
+      # - run: dotnet --list-sdks
+
+workflows:
+  build:
+    jobs:
+      - build
       # - run:
       #     name: Create Build Tag
       #     command: |
@@ -95,8 +126,8 @@ jobs:
 
 
 
-      - run: msbuild -version
-      - run: dotnet --version
+      # - run: msbuild -version
+      # - run: dotnet --version
 
 
       
@@ -107,36 +138,10 @@ jobs:
       #       choco install powershell -y
       #       refreshenv
 
-      - run:
-          name: Clone Repository
-          command: |
-            git config --global user.email "imnick592@gmail.com"
-            git config --global user.name "ramannikhil7"
-            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
-
-      # - run:
-      #     name: Build Packages
-      #     command: |
-      #       cd ~/repo
-      #       powershell -File "test msbuild path.ps1"
-      #       powershell -File test_PS_script.ps1
-      #     # shell: 
-          #   powershell.exe
-      # - run: win/install-dotnet-sdk
-      - run: dotnet build
-      - run: dotnet test
-      # - run: dotnet --list-sdks
-      # - run: choco install dotnetcore-sdk --version=3.1.426 -y
-      # - run: dotnet --list-sdks
-
-workflows:
-  build:
-    jobs:
-      - build: 
-          filters:
-                branches:
-                  only:
-                    - main
+          # filters:
+          #       branches:
+          #         only:
+          #           - main
 
 
 
