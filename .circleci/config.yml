@@ -32,18 +32,41 @@ jobs:
          name: Install git portable
          command: |
            choco install git.portable -y
+      
+      - run: 
+          name: Create a Build release
+          command: |
+              name: Checkout code
+               uses: actions/checkout@v2
+              name: Create Release
+                id: create_release
+                uses: actions/create-release@v1
+                env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+                with:
+                  tag_name: ${{ github.ref }}
+                  release_name: Release ${{ github.ref }}
+                  body: |
+                    Changes in this Release
+                    - First Change
+                    - Second Change
+                  draft: false
+                  prerelease: false
+      
+    
 
-      - run:
-         name: Create Build tag
-         command: |
-          if [ -n "${CIRCLE_TAG}" ]; then
-              echo "Existing tag found: ${CIRCLE_TAG}"
-            else
-              export BUILD_TAG="build-$(git rev-parse --short HEAD)"
-              echo "Creating new build tag: ${BUILD_TAG}"
-              git tag ${BUILD_TAG}
-              git push origin ${BUILD_TAG}
-          fi
+      # For genertaing the Build tag
+      # - run:
+      #    name: Create Build tag
+      #    command: |
+      #     if [ -n "${CIRCLE_TAG}" ]; then
+      #         echo "Existing tag found: ${CIRCLE_TAG}"
+      #       else
+      #         export BUILD_TAG="build-$(git rev-parse --short HEAD)"
+      #         echo "Creating new build tag: ${BUILD_TAG}"
+      #         git tag ${BUILD_TAG}
+      #         git push origin ${BUILD_TAG}
+      #     fi
         # Get the Git version for the Buuld tag
       # - run:
       #      name: Write host Build
@@ -93,6 +116,7 @@ workflows:
                 branches:
                   only:
                     - main
+
 
 
 
