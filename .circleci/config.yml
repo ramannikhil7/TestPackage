@@ -42,6 +42,8 @@ jobs:
             git config --global user.name "ramannikhil7"
             git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
 
+      - run: choco install dotnetcore-sdk -y 
+
       # - run:
       #     name: Build Packages
       #     command: |
