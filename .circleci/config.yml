@@ -20,12 +20,81 @@ jobs:
     #   DOTNET_VERSION: 3.1
     steps:
       - checkout:
-      # - win/use-node:
-      #     version: 14
-      # - win/with-powershell: |
-      
-
             path: ~/repo
+      
+      - run:
+          name: Install Git
+          command: |
+            choco install git -y
+            refreshenv
+      
+      - run: 
+         name: Install git portable
+         command: |
+           choco install git.portable -y
+
+      - run:
+         name: Create Build tag
+         command: |
+          if [ -n "${CIRCLE_TAG}" ]; then
+              echo "Existing tag found: ${CIRCLE_TAG}"
+            else
+              export BUILD_TAG="build-$(git rev-parse --short HEAD)"
+              echo "Creating new build tag: ${BUILD_TAG}"
+              git tag ${BUILD_TAG}
+              git push origin ${BUILD_TAG}
+
+        # Get the Git version for the Buuld tag
+      # - run:
+      #      name: Write host Build
+      #      command:  |
+      #       powershell.exe -Command Write-Host gitversion
+
+
+
+
+      - run: msbuild -version
+      - run: dotnet --version
+
+
+      
+      - run: Get-Host 
+      - run:
+          name: Install PowerShell
+          command: |
+            choco install powershell -y
+            refreshenv
+
+      - run:
+          name: Clone Repository
+          command: |
+            git config --global user.email "imnick592@gmail.com"
+            git config --global user.name "ramannikhil7"
+            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
+
+      - run:
+          name: Build Packages
+          command: |
+            cd ~/repo
+            powershell -File "test msbuild path.ps1"
+            powershell -File test_PS_script.ps1
+          # shell: 
+          #   powershell.exe
+      # - run: win/install-dotnet-sdk
+      - run: dotnet --list-sdks
+      - run: choco install dotnetcore-sdk --version=3.1.426 -y
+      - run: dotnet --list-sdks
+
+workflows:
+  build:
+    jobs:
+      - build: 
+          filters:
+                branches:
+                  only:
+                    - main
+
+
 
       # - run: choco install -y visualstudio2019buildtools
 
@@ -41,9 +110,6 @@ jobs:
       #     command: |
       #       winshell true
       #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
-
-      - run: msbuild -version
-      - run: dotnet --version
       # - run: msbuild /version
       # # - run:  dotnet build --version
 
@@ -89,46 +155,6 @@ jobs:
       # - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
 
             #  refreshenv
-
-      - run:
-          name: Install Git
-          command: |
-            choco install git -y
-            refreshenv
-      - run: Get-Host 
-      - run:
-          name: Install PowerShell
-          command: |
-            choco install powershell -y
-            refreshenv
-
-      - run:
-          name: Clone Repository
-          command: |
-            git config --global user.email "imnick592@gmail.com"
-            git config --global user.name "ramannikhil7"
-            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
-
-      - run:
-          name: Build Packages
-          command: |
-            cd ~/repo
-            powershell -File "test msbuild path.ps1"
-            powershell -File test_PS_script.ps1
-          # shell: 
-          #   powershell.exe
-      # - run: win/install-dotnet-sdk
-      - run: dotnet --list-sdks
-      - run: choco install dotnetcore-sdk --version=3.1.426 -y
-      - run: dotnet --list-sdks
-
-workflows:
-  build:
-    jobs:
-      - build
-
-
-
       # - run: 
       #     name: Run PS script
           # shell: powershell.exe
