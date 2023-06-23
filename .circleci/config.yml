@@ -51,7 +51,7 @@ jobs:
       #     # shell: 
           #   powershell.exe
       # - run: win/install-dotnet-sdk
-      - run: dotnet restore CircleCICoreProject.sln
+      - run: dotnet restore .\CircleCICoreProject.sln
       - run: dotnet build
       # - run: dotnet test
       - run:
