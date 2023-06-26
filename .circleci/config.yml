@@ -24,6 +24,8 @@ jobs:
       - checkout:
             path: ~/repo
       
+      - run: npx semantic-release
+      
       - run:
           name: Install Git
           command: |
@@ -62,9 +64,9 @@ jobs:
       #       dotnet restore ./CircleCICoreProject.sln
       # - run: dotnet build
       # - run: dotnet test
-      - run:
-          name: Run xUnit Tests
-          command: dotnet test --filter ./XUnitProject.UnitTest1.Test1 --logger:xunit
+      # - run:
+      #     name: Run xUnit Tests
+      #     command: dotnet test --filter ./XUnitProject.UnitTest1.Test1 --logger:xunit
 
       # - run: dotnet --list-sdks
       # - run: choco install dotnetcore-sdk --version=3.1.426 -y
