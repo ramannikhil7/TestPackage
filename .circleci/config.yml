@@ -32,7 +32,7 @@ jobs:
       # Run Semantic Release Notes Parser
       - run:
           name: Generate Release Notes
-          command: semanticreleasenotes-parser --token=$GITHUB_TOKEN
+          command: powershell -File semanticreleasenotes-parser --token=$GITHUB_TOKEN
 
       - run:
           name: Restore dependencies and build
