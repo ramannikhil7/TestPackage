@@ -24,7 +24,8 @@ jobs:
       - checkout:
             path: ~/repo
       
-      - run: npx semantic-release
+      - run: choco install semanticreleasenotes-parser -y
+      # - run: npx semantic-release
       
       - run:
           name: Install Git
