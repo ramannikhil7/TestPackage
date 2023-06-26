@@ -24,10 +24,10 @@ jobs:
       
       - run: choco install semanticreleasenotes-parser -y
       
-      - run:
-          name: Restore dependencies and build
-          # command: dotnet restore && dotnet build
-          command: dotnet build
+      # - run:
+      #     name: Restore dependencies and build
+      #     # command: dotnet restore && dotnet build
+      #     command: dotnet build
 
       # Run Semantic Release Notes Parser
       - run:
