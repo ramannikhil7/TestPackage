@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   windows: circleci/windows@2.0
   aws-cli: circleci/aws-cli@1.1.0
-  semantic-release: proxyco/semantic-release@4.0.0
+  # semantic-release: proxyco/semantic-release@4.0.0
   # orb-tools: circleci/orb-tools@12.0.3
   # version-tag: commitdev/version-tag@0.0.3
 
@@ -23,6 +23,15 @@ jobs:
             path: ~/repo
       
       - run: choco install semanticreleasenotes-parser -y
+      
+      - run:
+          name: Restore dependencies and build
+          command: dotnet restore && dotnet build
+
+      # Run Semantic Release Notes Parser
+      - run:
+          name: Generate Release Notes
+          command: semanticreleasenotes-parser --token=$GITHUB_TOKEN
 
       - run:
           name: Restore dependencies and build
