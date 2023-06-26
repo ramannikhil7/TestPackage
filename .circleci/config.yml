@@ -26,7 +26,8 @@ jobs:
       
       - run:
           name: Restore dependencies and build
-          command: dotnet restore && dotnet build
+          # command: dotnet restore && dotnet build
+          command: dotnet build
 
       # Run Semantic Release Notes Parser
       - run:
