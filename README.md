@@ -6,3 +6,4 @@ Trying to generate the Build tag for every commit
 2.0
 
 Added the tag versioning using some tags
+Tag 1.0
