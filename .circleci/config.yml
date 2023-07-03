@@ -14,7 +14,14 @@ jobs:
      steps:
         - checkout:
             path: ~/repo
-        - run: choco install awscli
+        - run: choco install awscli -y
+
+        - run: powershell -Command "Get-Location"
+        
+        - persist_to_workspace:
+              root: .
+              paths:
+                - repo\build\packages
 
         - run:
              name: Configure AWS credentials
@@ -30,6 +37,13 @@ jobs:
             name: Upload files to S3
           # copy the packages from source dir to destination dir
             command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+
+
+workflows:
+  build:
+    jobs:
+      - build
+
     # description: Setup and run application tests
     # executor:
     #   name: windows/default 
@@ -111,10 +125,7 @@ jobs:
       # - run: choco install dotnetcore-sdk --version=3.1.426 -y
       # - run: dotnet --list-sdks
 
-workflows:
-  build:
-    jobs:
-      - build
+
       # - run:
       #     name: Create Build Tag
       #     command: |
