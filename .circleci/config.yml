@@ -19,7 +19,7 @@ jobs:
         - run: powershell -Command "Get-Location"
         
         - persist_to_workspace:
-              root: .
+              root: C:\Users\circleci
               paths:
                 - repo\build\packages
 
