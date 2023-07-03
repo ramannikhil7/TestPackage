@@ -38,11 +38,20 @@ jobs:
           # copy the packages from source dir to destination dir
             command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
 
+  aws_test:
+      executor:
+          name: aws-cli/default 
+      steps:
+         - run: sudo apt update
+         - run: sudo apt install -y powershell
+         - run: pwd
+
 
 workflows:
   build:
     jobs:
       - build
+      - aws_test
 
     # description: Setup and run application tests
     # executor:
