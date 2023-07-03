@@ -9,61 +9,78 @@ orbs:
 
 jobs:
   build:
-    description: Setup and run application tests
-    executor:
-      name: windows/default 
-      # | win/win2019
-      shell: powershell.exe
-        # name: windows/server-2019
-      
-    # environment:
-    #   DOTNET_VERSION: 3.1
-    steps:
-      - checkout:
+     executor:
+       name: windows/default 
+     steps:
+        - checkout:
             path: ~/repo
-      
-      - run: choco install semanticreleasenotes-parser -y
-      
-      # - run:
-      #     name: Restore dependencies and build
-      #     # command: dotnet restore && dotnet build
-      #     command: dotnet build
+        - run: choco install awscli
 
-      # Run Semantic Release Notes Parser
-      - run:
-          name: Generate Release Notes
-          command: powershell -File semanticreleasenotes-parser --token=$GITHUB_TOKEN
-
-      - run:
-          name: Restore dependencies and build
-          command: dotnet restore && dotnet build
-
-      # Run Semantic Release Notes Parser
-      - run:
-          name: Generate Release Notes
-          command: semanticreleasenotes-parser --token=$GITHUB_TOKEN
-      # - run: npx semantic-release
+        - run:
+             name: Configure AWS credentials
+             command: |
+              aws configure set aws_access_key_id YOUR_ACCESS_KEY
+              aws configure set aws_secret_access_key YOUR_SECRET_KEY
+              aws configure set default.region YOUR_DEFAULT_REGION
+        - run:
+            name: Upload files to S3
+          # copy the packages from source dir to destination dir
+            command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+    # description: Setup and run application tests
+    # executor:
+    #   name: windows/default 
+    #   # | win/win2019
+    #   shell: powershell.exe
+    #     # name: windows/server-2019
       
-      - run:
-          name: Install Git
-          command: |
-            choco install git -y
-            refreshenv
+    # # environment:
+    # #   DOTNET_VERSION: 3.1
+    # steps:
+    #   - checkout:
+    #         path: ~/repo
       
-      - run: 
-         name: Install git portable
-         command: |
-           choco install git.portable -y
+    #   - run: choco install semanticreleasenotes-parser -y
       
-      - run:
-          name: Clone Repository
-          command: |
-            git config --global user.email "imnick592@gmail.com"
-            git config --global user.name "ramannikhil7"
-            git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
+    #   # - run:
+    #   #     name: Restore dependencies and build
+    #   #     # command: dotnet restore && dotnet build
+    #   #     command: dotnet build
 
-      # - run: choco install dotnetcore-sdk -y 
-      - run: choco install dotnetcore-sdk --version=3.1.100 -y
+    #   # Run Semantic Release Notes Parser
+    #   - run:
+    #       name: Generate Release Notes
+    #       command: powershell -File semanticreleasenotes-parser --token=$GITHUB_TOKEN
+
+    #   - run:
+    #       name: Restore dependencies and build
+    #       command: dotnet restore && dotnet build
+
+    #   # Run Semantic Release Notes Parser
+    #   - run:
+    #       name: Generate Release Notes
+    #       command: semanticreleasenotes-parser --token=$GITHUB_TOKEN
+    #   # - run: npx semantic-release
+      
+    #   - run:
+    #       name: Install Git
+    #       command: |
+    #         choco install git -y
+    #         refreshenv
+      
+    #   - run: 
+    #      name: Install git portable
+    #      command: |
+    #        choco install git.portable -y
+      
+    #   - run:
+    #       name: Clone Repository
+    #       command: |
+    #         git config --global user.email "imnick592@gmail.com"
+    #         git config --global user.name "ramannikhil7"
+    #         git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
+
+    #   # - run: choco install dotnetcore-sdk -y 
+    #   - run: choco install dotnetcore-sdk --version=3.1.100 -y
 
 
       # - run:
