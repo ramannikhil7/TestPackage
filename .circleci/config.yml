@@ -1,4 +1,305 @@
-# # Use the latest 2.1 version of CircleCI pipeline process engine.
+version: 2.1
+
+orbs:
+  windows: circleci/windows@2.0
+  aws-cli: circleci/aws-cli@1.1.0
+  # semantic-release: proxyco/semantic-release@4.0.0
+  # orb-tools: circleci/orb-tools@12.0.3
+  # version-tag: commitdev/version-tag@0.0.3
+
+jobs:
+  build:
+     executor:
+       name: windows/default 
+     steps:
+        - checkout:
+            path: ~/repo
+        - run: choco install awscli -y
+
+        - run: powershell -Command "Get-Location"
+        
+        - persist_to_workspace:
+              root: C:\Users\circleci
+              paths:
+                - repo\build\packages
+
+        - run:
+             name: Configure AWS credentials
+             command: |
+                echo $AWS_ACCESS_KEY_ID | aws configure set aws_access_key_id --profile circleci default
+                 echo $AWS_SECRET_ACCESS_KEY | aws configure set aws_secret_access_key --profile circleci default
+                echo $AWS_DEFAULT_REGION | aws configure set default.region --profile circleci default
+                
+              # aws configure set aws_access_key_id YOUR_ACCESS_KEY
+              # aws configure set aws_secret_access_key YOUR_SECRET_KEY
+              # aws configure set default.region YOUR_DEFAULT_REGION
+        - run:
+            name: Upload files to S3
+          # copy the packages from source dir to destination dir
+            command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+
+  aws_test:
+      executor:
+          name: aws-cli/default 
+      steps:
+         - run: sudo apt update
+         - run: sudo apt install -y powershell
+         - run: pwd
+
+
+workflows:
+  build:
+    jobs:
+      - build
+      - aws_test
+
+    # description: Setup and run application tests
+    # executor:
+    #   name: windows/default 
+    #   # | win/win2019
+    #   shell: powershell.exe
+    #     # name: windows/server-2019
+      
+    # # environment:
+    # #   DOTNET_VERSION: 3.1
+    # steps:
+    #   - checkout:
+    #         path: ~/repo
+      
+    #   - run: choco install semanticreleasenotes-parser -y
+      
+    #   # - run:
+    #   #     name: Restore dependencies and build
+    #   #     # command: dotnet restore && dotnet build
+    #   #     command: dotnet build
+
+    #   # Run Semantic Release Notes Parser
+    #   - run:
+    #       name: Generate Release Notes
+    #       command: powershell -File semanticreleasenotes-parser --token=$GITHUB_TOKEN
+
+    #   - run:
+    #       name: Restore dependencies and build
+    #       command: dotnet restore && dotnet build
+
+    #   # Run Semantic Release Notes Parser
+    #   - run:
+    #       name: Generate Release Notes
+    #       command: semanticreleasenotes-parser --token=$GITHUB_TOKEN
+    #   # - run: npx semantic-release
+      
+    #   - run:
+    #       name: Install Git
+    #       command: |
+    #         choco install git -y
+    #         refreshenv
+      
+    #   - run: 
+    #      name: Install git portable
+    #      command: |
+    #        choco install git.portable -y
+      
+    #   - run:
+    #       name: Clone Repository
+    #       command: |
+    #         git config --global user.email "imnick592@gmail.com"
+    #         git config --global user.name "ramannikhil7"
+    #         git clone --branch main https://github.com/ramannikhil7/TestPackage ~/repo
+
+    #   # - run: choco install dotnetcore-sdk -y 
+    #   - run: choco install dotnetcore-sdk --version=3.1.100 -y
+
+
+      # - run:
+      #     name: Build Packages
+      #     command: |
+      #       cd ~/repo
+      #       powershell -File "test msbuild path.ps1"
+      #       powershell -File test_PS_script.ps1
+      #     # shell: 
+          #   powershell.exe
+      # - run: win/install-dotnet-sdk
+      # - run:
+      #     name: Build Packages
+      #     command: |
+      #       cd ~/repo
+      #       dotnet restore ./CircleCICoreProject.sln
+      # - run: dotnet build
+      # - run: dotnet test
+      # - run:
+      #     name: Run xUnit Tests
+      #     command: dotnet test --filter ./XUnitProject.UnitTest1.Test1 --logger:xunit
+
+      # - run: dotnet --list-sdks
+      # - run: choco install dotnetcore-sdk --version=3.1.426 -y
+      # - run: dotnet --list-sdks
+
+
+      # - run:
+      #     name: Create Build Tag
+      #     command: |
+      #       if [ -n "${CIRCLE_TAG}" ]; then
+      #         echo "Existing tag found: ${CIRCLE_TAG}"
+      #       else
+      #         export BUILD_TAG="build-$(git rev-parse --short HEAD)"
+      #         echo "Creating new build tag: ${BUILD_TAG}"
+      #         git tag ${BUILD_TAG}
+      #         git push origin ${BUILD_TAG}
+      #         git fetch --tags
+      #         git config --global user.email "imnick592@gmail.com"
+      #         git config --global user.name "ramannikhil7"
+      #         git tag -a ${BUILD_TAG} -m "Automatic build tag"
+      #         git push origin ${BUILD_TAG}
+      #       fi
+
+      # - run: 
+      #     name: Create a Build release
+      #     command: |
+      #         name: Checkout code
+      #          uses: actions/checkout@v2
+      #         name: Create Release
+      #           id: create_release
+      #           uses: actions/create-release@v1
+      #           env:
+      #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #           with:
+      #             tag_name: ${{ github.ref }}
+      #             release_name: Release ${{ github.ref }}
+      #             body: |
+      #               Changes in this Release
+      #               - First Change
+      #               - Second Change
+      #             draft: false
+      #             prerelease: false
+      
+    
+
+      # For genertaing the Build tag
+      # - run:
+      #    name: Create Build tag
+      #    command: |
+      #     if [ -n "${CIRCLE_TAG}" ]; then
+      #         echo "Existing tag found: ${CIRCLE_TAG}"
+      #       else
+      #         export BUILD_TAG="build-$(git rev-parse --short HEAD)"
+      #         echo "Creating new build tag: ${BUILD_TAG}"
+      #         git tag ${BUILD_TAG}
+      #         git push origin ${BUILD_TAG}
+      #     fi
+        # Get the Git version for the Buuld tag
+      # - run:
+      #      name: Write host Build
+      #      command:  |
+      #       powershell.exe -Command Write-Host gitversion
+
+
+
+
+      # - run: msbuild -version
+      # - run: dotnet --version
+
+
+      
+      # - run: Get-Host 
+      # - run:
+      #     name: Install PowerShell
+      #     command: |
+      #       choco install powershell -y
+      #       refreshenv
+
+          # filters:
+          #       branches:
+          #         only:
+          #           - main
+
+
+
+
+      # - run: choco install -y visualstudio2019buildtools
+
+      # - run: Start-Process powershell.exe -Verb runAs
+      # persist_to_workspace:
+          # - ~/repo
+      # - run: choco install visualstudio2022buildtools -y  --params $InstallerArgs
+      # - run: choco install msbuild2022
+      # - run: choco install visualstudio2022buildtools
+      # - run: choco install msbuild -y
+      # - run:
+      #     name: Run PowerShell in admin mode
+      #     command: |
+      #       winshell true
+      #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process powershell.exe -Verb runAs"
+      # - run: msbuild /version
+      # # - run:  dotnet build --version
+
+      # - run:
+      #    name: Download MSBuild
+      #    command: |
+      #        Invoke-WebRequest -Uri 'https://aka.ms/buildtools' -OutFile 'vs_buildtools.exe'
+      
+      # - run: 
+      #    name: Get path location
+      #    command:
+      #     #  $currentDirectory = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+      #      MSBUILD_PATH=$("${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
+      #      echo  $MSBUILD_PATH
+
+      # - run: 
+      #    name: Install MSBuild
+      #    command: |
+      #       Start-Process -FilePath $MSBUILD_PATH -ArgumentList '--quiet --wait'
+
+
+
+      # - run: 
+      #     name: Install MS Build
+      #     command: |   
+      #       Install-Module -Name Invoke-MsBuild -RequiredVersion 2.6.2
+      # install the ms build tools 
+      # - run: mkdir 'C:\vs_buildtools.exe'
+
+      # - run: 
+      #     name : store the build tool
+      #     command: |
+      #       Invoke-WebRequest -Uri 'https://aka.ms/vs/16/release/vs_buildtools.exe' -OutFile 'C:\vs_buildtools.exe'
+      
+
+      # - run:
+      #    name: run the build tool
+      #    command: |
+      #       Start-Process -FilePath 'C:\vs_buildtools.exe' -ArgumentList '--quiet --norestart --add Microsoft.VisualStudio.Workload.MSBuildTools --includeRecommended'
+
+
+
+      # - run: choco install visualstudio2019-workload-visualstudioextensionbuildtools
+
+            #  refreshenv
+      # - run: 
+      #     name: Run PS script
+          # shell: powershell.exe
+          # command: powershell -ExecutionPolicy Bypass -File test_PS_script.ps1
+      # - run: choco install gitversion.portable
+      #- run: choco install netfx-4.8-devpack
+      # - run: choco install netfx-4.7.2-devpack
+      # - run: dotnet tool install -g dotnet-core-uninstall
+      # Clone the GitHub repository
+      # - run:
+
+      #  name: Run PowerShell script
+      #    command: |
+      #       git clone https://github.com/ramannikhil7/TestPackage
+
+      #       # Change to the directory containing the PowerShell script
+      #       cd TestPackage
+
+      #       # Run the PowerShell script
+      #       # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
+      #       powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
+      # - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
+      # - run: dotnet --list-sdks
+      #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
+
+      # # Use the latest 2.1 version of CircleCI pipeline process engine.
 # # See: https://circleci.com/docs/configuration-reference
 # version: 2.1
 
@@ -35,39 +336,39 @@
 
 
 
-version: 2.1
+# version: 2.1
 
-orbs:
-  windows: circleci/windows@2.2.0
+# orbs:
+#   windows: circleci/windows@2.2.0
 
-jobs:
-  build:
-    description: Setup and run application tests
-    executor:
-      name: windows/default
-    steps:
-      - checkout
-      # - run: choco install gitversion.portable
-      #- run: choco install netfx-4.8-devpack
-      # - run: choco install netfx-4.7.2-devpack
-      # - run: dotnet tool install -g dotnet-core-uninstall
-       # Clone the GitHub repository
-      - run:
-         name: Run PowerShell script
-         command: |
-            git clone https://github.com/ramannikhil7/TestPackage
+# jobs:
+#   build:
+#     description: Setup and run application tests
+#     executor:
+#       name: windows/default
+#     steps:
+#       - checkout
+#       # - run: choco install gitversion.portable
+#       #- run: choco install netfx-4.8-devpack
+#       # - run: choco install netfx-4.7.2-devpack
+#       # - run: dotnet tool install -g dotnet-core-uninstall
+#        # Clone the GitHub repository
+#       - run:
+#          name: Run PowerShell script
+#          command: |
+#             git clone https://github.com/ramannikhil7/TestPackage
 
-            # Change to the directory containing the PowerShell script
-            cd TestPackage
+#             # Change to the directory containing the PowerShell script
+#             cd TestPackage
 
-            # Run the PowerShell script
-            # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
-            powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
-      - run: dotnet --list-sdks
-      - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
-      - run: dotnet --list-sdks
-      #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
-workflows:
-  build:
-    jobs:
-      - build
+#             # Run the PowerShell script
+#             # powershell.exe -File dotnet-core-uninstall-1.6.0.msi
+#             powershell.exe -ExecutionPolicy Bypass -Command "Start-Process -Wait -FilePath 'dotnet-core-uninstall-1.6.0.msi'"
+#       - run: dotnet --list-sdks
+#       - run: dotnet-core-uninstall remove --all-below 6.0 --sdk --force
+#       - run: dotnet --list-sdks
+#       #- run:  dotnet restore .\all_projects.sln -p:TargetFramework=net471
+# workflows:
+#   build:
+#     jobs:
+#       - build
