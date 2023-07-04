@@ -14,6 +14,8 @@ Write-Host "major $major1"
 Write-Host "minor $minor"
 Write-Host "patch $patch"
 
+$ret_tags = Invoke-Expression -Command 'git describe --tags --abbrev=0'
+$val = $ret_tags.outputs.latest_tag
 
 Write-Host "$RELEASE_VERSION"
 
