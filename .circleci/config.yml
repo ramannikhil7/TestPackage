@@ -22,12 +22,29 @@ jobs:
         #       root: C:\Users\circleci
         #       paths:
         #         - repo\build\packages
+        - run:
+            name: Install Git
+            command: |
+              choco install git -y
+              refreshenv
+
+        - run:
+            name: Clone Repository
+            command: |
+              git config --global user.email "imnick592@gmail.com"
+              git config --global user.name "ramannikhil7"
+              git clone -b main  https://github.com/ramannikhil7/TestPackage ~/repo
+
         - run: pwd
-        - run: cd "C:\Users\circleci\project\repo\CircleCICoreProject.sln"  
+        # - run: cd "C:\Users\circleci\project\repo\CircleCICoreProject.sln"  
         - run: pwd
 
-        - run: dotnet build .\CircleCICoreProject.sln
-        - run: dotnet pack ~\repo\CircleCICoreProject.sln
+        - run: 
+            name: Build
+            command: | 
+              cd ~/repo
+              dotnet build CircleCICoreProject.sln
+        - run: dotnet pack CircleCICoreProject.sln
         - run: pwd
         - run: ls
          
