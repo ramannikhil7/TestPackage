@@ -23,8 +23,8 @@ jobs:
         #       paths:
         #         - repo\build\packages
 
-        - run: dotnet build
-        - run: dotnet pack
+        - run: dotnet build .\CircleCICoreProject.sln
+        - run: dotnet pack .\CircleCICoreProject.sln
         - run: pwd
         - run: ls
          
