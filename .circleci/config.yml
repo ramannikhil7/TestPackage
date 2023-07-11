@@ -16,7 +16,7 @@ jobs:
             path: ~/repo
         # - run: choco install awscli -y
 
-        - run: powershell -Command "Get-Location"
+        # - run: powershell -Command "Get-Location"
         
         # - persist_to_workspace:
         #       root: C:\Users\circleci
@@ -24,7 +24,7 @@ jobs:
         #         - repo\build\packages
         - run: pwd
 
-        - run: dotnet build ~\repo\CircleCICoreProject.sln
+        - run: dotnet build .\CircleCICoreProject.sln
         - run: dotnet pack ~\repo\CircleCICoreProject.sln
         - run: pwd
         - run: ls
