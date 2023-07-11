@@ -24,8 +24,8 @@ jobs:
         #         - repo\build\packages
         - run: pwd
 
-        - run: dotnet build ~/repo/CircleCICoreProject.sln
-        - run: dotnet pack .\CircleCICoreProject.sln
+        - run: dotnet build ~\repo\CircleCICoreProject.sln
+        - run: dotnet pack ~\repo\CircleCICoreProject.sln
         - run: pwd
         - run: ls
          
