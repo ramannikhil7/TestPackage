@@ -14,44 +14,49 @@ jobs:
      steps:
         - checkout:
             path: ~/repo
-        - run: choco install awscli -y
+        # - run: choco install awscli -y
 
         - run: powershell -Command "Get-Location"
         
-        - persist_to_workspace:
-              root: C:\Users\circleci
-              paths:
-                - repo\build\packages
+        # - persist_to_workspace:
+        #       root: C:\Users\circleci
+        #       paths:
+        #         - repo\build\packages
 
-        - run:
-             name: Configure AWS credentials
-             command: |
-                echo $AWS_ACCESS_KEY_ID | aws configure set aws_access_key_id --profile circleci default
-                 echo $AWS_SECRET_ACCESS_KEY | aws configure set aws_secret_access_key --profile circleci default
-                echo $AWS_DEFAULT_REGION | aws configure set default.region --profile circleci default
+        - run: dotnet build
+        - run: dotnet pack
+        - run: pwd
+        - run: ls
+         
+        # - run:
+        #      name: Configure AWS credentials
+        #      command: |
+        #         echo $AWS_ACCESS_KEY_ID | aws configure set aws_access_key_id --profile circleci default
+        #          echo $AWS_SECRET_ACCESS_KEY | aws configure set aws_secret_access_key --profile circleci default
+        #         echo $AWS_DEFAULT_REGION | aws configure set default.region --profile circleci default
                 
               # aws configure set aws_access_key_id YOUR_ACCESS_KEY
               # aws configure set aws_secret_access_key YOUR_SECRET_KEY
               # aws configure set default.region YOUR_DEFAULT_REGION
-        - run:
-            name: Upload files to S3
-          # copy the packages from source dir to destination dir
-            command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+        # - run:
+        #     name: Upload files to S3
+        #   # copy the packages from source dir to destination dir
+        #     command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
 
-  aws_test:
-      executor:
-          name: aws-cli/default 
-      steps:
-         - run: sudo apt update
-         - run: sudo apt install -y powershell
-         - run: pwd
+  # aws_test:
+  #     executor:
+  #         name: aws-cli/default 
+  #     steps:
+  #        - run: sudo apt update
+  #        - run: sudo apt install -y powershell
+  #        - run: pwd
 
 
 workflows:
   build:
     jobs:
       - build
-      - aws_test
+      # - aws_test
 
     # description: Setup and run application tests
     # executor:
