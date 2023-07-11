@@ -37,7 +37,8 @@ jobs:
 
         - run: pwd
         # - run: cd "C:\Users\circleci\project\repo\CircleCICoreProject.sln"  
-        - run: pwd
+        - run: choco install dotnetcore-sdk --version=3.1.1
+
 
         - run: 
             name: Build
