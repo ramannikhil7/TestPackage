@@ -48,7 +48,7 @@ jobs:
         - run: pwd
         - run: ls
         
-        - run: dotnet test --configuration Release --no-build
+        - run: dotnet test CircleCICoreProject.sln
 
 
 
