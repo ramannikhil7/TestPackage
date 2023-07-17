@@ -41,14 +41,18 @@ jobs:
               cd ~/repo
               dotnet build CircleCICoreProject.sln
         - run: 
-            name: Build
+            name: Pack
             command: | 
               cd ~/repo
               dotnet pack CircleCICoreProject.sln
         - run: pwd
         - run: ls
         
-        - run: dotnet test CircleCICoreProject.sln
+        - run: 
+            name: Pack
+            command: | 
+              cd ~/repo
+              dotnet test CircleCICoreProject.sln
 
 
 
