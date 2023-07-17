@@ -49,7 +49,7 @@ jobs:
         - run: ls
         
         - run: 
-            name: Pack
+            name: Test
             command: | 
               cd ~/repo
               dotnet test CircleCICoreProject.sln
