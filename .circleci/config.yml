@@ -17,41 +17,74 @@ jobs:
         - run: choco install awscli -y
 
         - run: powershell -Command "Get-Location"
-        
-        - persist_to_workspace:
-              root: C:\Users\circleci
-              paths:
-                - repo\build\packages
+        - run:
+            name: Install Git
+            command: |
+              choco install git -y
+              refreshenv
 
         - run:
-             name: Configure AWS credentials
-             command: |
-                echo $AWS_ACCESS_KEY_ID | aws configure set aws_access_key_id --profile circleci default
-                 echo $AWS_SECRET_ACCESS_KEY | aws configure set aws_secret_access_key --profile circleci default
-                echo $AWS_DEFAULT_REGION | aws configure set default.region --profile circleci default
-                
-              # aws configure set aws_access_key_id YOUR_ACCESS_KEY
-              # aws configure set aws_secret_access_key YOUR_SECRET_KEY
-              # aws configure set default.region YOUR_DEFAULT_REGION
-        - run:
-            name: Upload files to S3
-          # copy the packages from source dir to destination dir
-            command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+            name: Clone Repository
+            command: |
+              git config --global user.email "imnick592@gmail.com"
+              git config --global user.name "ramannikhil7"
+              git clone -b main  https://github.com/ramannikhil7/TestPackage ~/repo
 
-  aws_test:
-      executor:
-          name: aws-cli/default 
-      steps:
-         - run: sudo apt update
-         - run: sudo apt install -y powershell
-         - run: pwd
+        - run: pwd
+        # - run: cd "C:\Users\circleci\project\repo\CircleCICoreProject.sln"  
+        - run: choco install dotnetcore-sdk --version=3.1.100
+
+
+        - run: 
+            name: Build
+            command: | 
+              cd ~/repo
+              dotnet build CircleCICoreProject.sln
+        - run: 
+            name: Build
+            command: | 
+              cd ~/repo
+              dotnet pack CircleCICoreProject.sln
+        - run: pwd
+        - run: ls
+
 
 
 workflows:
   build:
     jobs:
       - build
-      - aws_test
+        
+        # - persist_to_workspace:
+        #       root: C:\Users\circleci
+        #       paths:
+        #         - repo\build\packages
+
+        # - run:
+        #      name: Configure AWS credentials
+        #      command: |
+        #         echo $AWS_ACCESS_KEY_ID | aws configure set aws_access_key_id --profile circleci default
+        #          echo $AWS_SECRET_ACCESS_KEY | aws configure set aws_secret_access_key --profile circleci default
+        #         echo $AWS_DEFAULT_REGION | aws configure set default.region --profile circleci default
+                
+        #       # aws configure set aws_access_key_id YOUR_ACCESS_KEY
+        #       # aws configure set aws_secret_access_key YOUR_SECRET_KEY
+        #       # aws configure set default.region YOUR_DEFAULT_REGION
+        # - run:
+        #     name: Upload files to S3
+        #   # copy the packages from source dir to destination dir
+        #     command: aws s3 cp <source_directory> s3://<bucket_name>/<destination_directory> --recursive
+
+  # aws_test:
+  #     executor:
+  #         name: aws-cli/default 
+  #     steps:
+  #        - run: sudo apt update
+  #        - run: sudo apt install -y powershell
+  #        - run: pwd
+
+
+      # - aws_test
 
     # description: Setup and run application tests
     # executor:
